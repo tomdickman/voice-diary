@@ -54,10 +54,17 @@ def save_diary(text: str) -> Path:
     return file_path
 
 
-def process_diary() -> Path:
+def process_diary(enhance: bool = False) -> Path:
     model = load_model()
     record_audio()
     text = transcribe(model)
+
+    if enhance:
+        from .enhancer import enhance_diary
+
+        print("Enhancing with AI...")
+        text = enhance_diary(text)
+
     diary = format_diary(text)
     path = save_diary(diary)
     return path
