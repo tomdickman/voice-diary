@@ -32,6 +32,7 @@ Records audio (up to 5 minutes by default) and saves to `~/diary/YYYY-MM-DD.md`.
 |--------|-------------|
 | `--duration` | Recording duration in seconds (default: 300) |
 | `--enhance` | Pass transcript through Ollama for grammar fixes |
+| `--path` | Directory to save diary entries (default: ~/diary) |
 
 ### Examples
 
@@ -41,6 +42,9 @@ uv run diary dictate --duration 120
 
 # With AI enhancement (requires Ollama running)
 uv run diary dictate --enhance
+
+# Save to custom directory
+uv run diary dictate --path /path/to/my/diary
 
 # 1 minute with enhancement
 uv run diary dictate --duration 60 --enhance

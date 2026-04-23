@@ -1,4 +1,5 @@
 import click
+from pathlib import Path
 from .transcriber import process_diary
 
 
@@ -17,13 +18,20 @@ def cli():
     default=False,
     help="Enhance with Ollama for better grammar and tone (default: off)",
 )
-def dictate(duration, enhance):
+@click.option(
+    "--path",
+    type=click.Path(exists=False),
+    default=None,
+    help="Directory to save diary entries (default: ~/diary)",
+)
+def dictate(duration, enhance, path):
     """Record and transcribe your diary entry."""
     click.echo("Starting diary dictation...")
     click.echo("=" * 50)
 
-    path = process_diary(enhance=enhance)
-    click.echo(f"\nSuccess! Diary saved to: {path}")
+    path = Path(path) if path else None
+    output_path = process_diary(enhance=enhance, diary_path=path)
+    click.echo(f"\nSuccess! Diary saved to: {output_path}")
 
 
 if __name__ == "__main__":

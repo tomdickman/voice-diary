@@ -45,16 +45,17 @@ def format_diary(text: str) -> str:
     return formatted
 
 
-def save_diary(text: str) -> Path:
-    DIARY_PATH.mkdir(parents=True, exist_ok=True)
+def save_diary(text: str, diary_path: Path = None) -> Path:
+    target_dir = diary_path if diary_path else DIARY_PATH
+    target_dir.mkdir(parents=True, exist_ok=True)
     today = date.today()
     file_name = f"{today.isoformat()}.md"
-    file_path = DIARY_PATH / file_name
+    file_path = target_dir / file_name
     file_path.write_text(text.strip() + "\n")
     return file_path
 
 
-def process_diary(enhance: bool = False) -> Path:
+def process_diary(enhance: bool = False, diary_path: Path = None) -> Path:
     model = load_model()
     record_audio()
     text = transcribe(model)
@@ -66,5 +67,5 @@ def process_diary(enhance: bool = False) -> Path:
         text = enhance_diary(text)
 
     diary = format_diary(text)
-    path = save_diary(diary)
+    path = save_diary(diary, diary_path)
     return path
